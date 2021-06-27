@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+
+<h1>Welcome to automation tests coupons project!</h1>
+<h2>Please read carefully all the instructions bellow before going through the APIs</h2>
+
+<p>
+This project represents a system of restaurant coupons which will provide a discount on some dishes.<br>
+
+Clients can register and see all the coupons available for purchase, they can then login, buy a coupon and use it to get the discount,<br>
+Each client can hold only 1 instance of the same coupon at a time.<br><br>
+
+Admins can login and add restaurants (register - notice: <strong>only admins can register restaurants</strong>),<br>
+admins can also get a list of all clients restaurants that exist in the DB and remove a single client or restaurant.<br><br>
+
+<strong style="text-decoration: underline">admin login info:</strong><br>
+<strong>username:</strong> admin<br>
+<strong>password:</strong> admin
+<br>
+<br>
+
+Restaurants can login and see all their coupons, they can also add and remove coupons as they wish,<br>
+a single restaurant can not see coupons of other restaurants or remove them,<br>
+If a restaurant removes a coupon after a client bought it, but has not used it yet, the client will not be affected and will still be able to use the coupon.<br><br>
+
+Both clients and restaurants can update their info and get their info (which will be helpful to see if the info updated as they wished)
+<p>
+
+<hr>
+
+<h3>Bellow is a description of the available APIs:</h3>
+<p>notice: default base path is: http://localhost:8081/</p>
+
+<h4>Register Apis:</h4>
+<table>
+  <tr>
+	<th>Method</th>
+    <th>Endpoint</th>
+    <th>Params</th>
+	<th>Headers</th>
+	<th>Body example</th>
+    <th>Description</th>
+	<th>Response code</th>
+  </tr>
+  <tr>
+	<td>POST</td>
+    <td>/register/client</td>
+    <td>N/A</td>
+    <td>user, pass</td>
+	<td>"{"id": 0,"username": "","password": "","role": null,"firstName": "first1","lastName": "last1","age": 10}"</td>
+    <td>Register a client</td>
+	<td>201</td>
+  </tr>
+  <tr>
+	<td>POST</td>
+    <td>/register/restaurant</td>
+    <td>N/A</td>
+    <td>user, pass, token</td>
+	<td>"{"id": 0,"username": "","password": "","role": null,"name": "first1","coupons": []}"</td>
+    <td>Register a restaurant</td>
+	<td>201</td>
+  </tr>
+</table>
+
+<br>
+
+<h4>Login Apis:</h4>
+<table>
+  <tr>
+	<th>Method</th>
+    <th>Endpoint</th>
+    <th>Params</th>
+	<th>Headers</th>
+	<th>Body example</th>
+    <th>Description</th>
+	<th>Response code</th>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/login</td>
+    <td>N/A</td>
+    <td>user, pass</td>
+	<td>N/A</td>
+    <td>Login with exist user</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/logout/{token(String)}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+	<td>N/A</td>
+    <td>Logout using path param</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/logout</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Logout using header</td>
+	<td>200</td>
+  </tr>
+</table>
+
+<br>
+
+<h4>Admin Apis:</h4>
+<table>
+  <tr>
+	<th>Method</th>
+    <th>Endpoint</th>
+    <th>Params</th>
+	<th>Headers</th>
+	<th>Body example</th>
+    <th>Description</th>
+	<th>Response code</th>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/admin/getClient</td>
+    <td>id</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read a client from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/admin/getRestaurant</td>
+    <td>id</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read a restaurant from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/admin/getAllClients</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read all existing clients from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/admin/getAllRestaurants</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read all existing restaurants from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>DELETE</td>
+    <td>/admin/deleteClient</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>"{"id": 1000001,"username": "test1","password": "123","role": "CLIENT","firstName": "first1","lastName": "last1","age": 10}"</td>
+    <td>Delete an existing client from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>DELETE</td>
+    <td>/admin/deleteRestaurant</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>"{"id": 1000001,"username": "resta1","password": "123","role": "RESTAURANT","name": "first1","coupons": []}"</td>
+    <td>Delete an existing restaurant from DB</td>
+	<td>200</td>
+  </tr>
+</table>
+
+<br>
+
+<h4>Restaurant Apis:</h4>
+<table>
+  <tr>
+	<th>Method</th>
+    <th>Endpoint</th>
+    <th>Params</th>
+	<th>Headers</th>
+	<th>Body example</th>
+    <th>Description</th>
+	<th>Response code</th>
+  </tr>
+  <tr>
+	<td>POST</td>
+    <td>/restaurant/addCoupon</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>"{"id": 0,"name": "coupon1","info": "10% discount on falafel","ownerRestaurantId": 0}"</td>
+    <td>Create a coupon linked to restaurant in DB</td>
+	<td>201</td>
+  </tr>
+  <tr>
+	<td>DELETE</td>
+    <td>/restaurant/removeCoupon</td>
+    <td>id</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Delete a restaurants coupon from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/restaurant/myCoupons</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read all restaurant coupons from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>PUT</td>
+    <td>/restaurant/update</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>"{"id": 0,"username": null,"password": null,"role": null,"name": "name1 updated","coupons": null}"</td>
+    <td>Update restaurant info in DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/restaurant/myInfo</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read restaurant info from DB</td>
+	<td>200</td>
+  </tr>
+</table>
+
+<br>
+
+<h4>Client Apis:</h4>
+<table>
+  <tr>
+	<th>Method</th>
+    <th>Endpoint</th>
+    <th>Params</th>
+	<th>Headers</th>
+	<th>Body example</th>
+    <th>Description</th>
+	<th>Response code</th>
+  </tr>
+  <tr>
+	<td>POST</td>
+    <td>/client/buy/{id(long)}</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Create a coupon linked to client in DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>DELETE</td>
+    <td>/client/use/{id(long)}</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Delete a coupon linked to client in DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>PUT</td>
+    <td>/client/update</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>"{"id": "","username": null,"password": null,"role": null,"firstName": "first1 updated","lastName": "last1 updated","age": 30}"</td>
+    <td>Update client info in DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/client/myInfo</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read client info from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/client/myCoupons</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read all client coupons from DB</td>
+	<td>200</td>
+  </tr>
+  <tr>
+	<td>GET</td>
+    <td>/client/allCoupons</td>
+    <td>N/A</td>
+    <td>token</td>
+	<td>N/A</td>
+    <td>Read all coupons from DB</td>
+	<td>200</td>
+  </tr>
+</table>
+
+<br>
+<h1>Good Luck!</h1>
+
+</body>
+</html>
